@@ -2,8 +2,6 @@
 
 https://user-images.githubusercontent.com/76753377/232330339-03a9e9f3-48a3-43ca-ab0a-109da3d1c89c.mov
 
-<img width="1470" alt="Captura de Tela 2023-04-16 às 14 21 34" src="https://user-images.githubusercontent.com/76753377/232329696-354af9b2-8c0d-479c-b3ee-55ee0e7bc79c.png">
-
 ## Installation
 
 - Use `yarn add @edmaralencar/modal` or `npm install @edmaralencar/modal`
