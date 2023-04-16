@@ -2,6 +2,8 @@
 
 https://user-images.githubusercontent.com/76753377/232330339-03a9e9f3-48a3-43ca-ab0a-109da3d1c89c.mov
 
+#### Github: https://github.com/edmaaralencar/react-modal
+
 ## Installation
 
 - Use `yarn add @edmaralencar/modal` or `npm install @edmaralencar/modal`
