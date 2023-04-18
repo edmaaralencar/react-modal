@@ -1,52 +1,59 @@
 import React from "react";
-import "./modal.css";
+import "./drawer.css";
 import { motion } from "framer-motion";
 import * as Dialog from "@radix-ui/react-dialog";
 import { AnimatePresence } from "framer-motion";
 
-const variantScale = {
+const variantScale = (position: string, width: number) => ({
   hidden: {
-    scale: 0,
     opacity: 0,
+    x: position === "right" ? width : -width,
   },
   visible: {
-    scale: 1,
+    x: 0,
     opacity: 1,
     transition: {
-      duration: 0.5,
-      type: "spring",
-      damping: 25,
-      stiffness: 500,
+      type: "tween",
+      duration: 0.3,
     },
   },
   exit: {
-    scale: 0,
+    x: position === "right" ? width : -width,
     opacity: 0,
     transition: {
       duration: 0.2,
     },
   },
-};
+});
 
-type ModalProps = {
+type DrawerProps = {
   open: boolean;
   onOpenChange: (value: boolean) => void;
   children: JSX.Element;
-  variant?: {
-    hidden: Record<string, any>;
-    visible: Record<string, any>;
-    exit: Record<string, any>;
-  };
-  backgroundOpacity?: 0|0.1|0.2|0.3|0.4|0.5|0.6|0.7|0.8|0.9|1;
+  backgroundOpacity?:
+    | 0
+    | 0.1
+    | 0.2
+    | 0.3
+    | 0.4
+    | 0.5
+    | 0.6
+    | 0.7
+    | 0.8
+    | 0.9
+    | 1;
+  position?: "right" | "left";
+  width?: number;
 };
 
-function Modal({
+function Drawer({
   open,
   onOpenChange,
-  variant = variantScale,
   children,
-  backgroundOpacity = 0.8
-}: ModalProps) {
+  backgroundOpacity = 0.8,
+  position = "right",
+  width = 300,
+}: DrawerProps) {
   if (!children) {
     throw new Error();
   }
@@ -55,15 +62,26 @@ function Modal({
     ...children.props,
     children: (
       <motion.div
-        variants={variant}
+        variants={variantScale(position, width)}
         initial="hidden"
         animate="visible"
         exit="exit"
+        style={{
+          height: "100%",
+        }}
       >
         {children}
       </motion.div>
     ),
   });
+
+  let style;
+
+  if (position === "right") {
+    style = { right: 0 };
+  } else {
+    style = { left: 0 };
+  }
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
@@ -73,7 +91,7 @@ function Modal({
             <Dialog.Overlay forceMount asChild>
               <motion.div
                 style={{
-                  backgroundColor: `rgba(0, 0, 0, ${backgroundOpacity})`
+                  backgroundColor: `rgba(0, 0, 0, ${backgroundOpacity})`,
                 }}
                 className="backdrop"
                 initial={{
@@ -92,7 +110,10 @@ function Modal({
             </Dialog.Overlay>
 
             <Dialog.Content asChild forceMount>
-              <div className="modal-container">
+              <div
+                className="drawer-container"
+                style={{ ...style, maxWidth: width, width: "100%" }}
+              >
                 {clonedElement.props.children}
               </div>
             </Dialog.Content>
@@ -103,8 +124,8 @@ function Modal({
   );
 }
 
-export const ModalClose = Dialog.DialogClose
-export const ModalTitle = Dialog.DialogTitle
-export const ModalDescription = Dialog.DialogDescription
+export const DrawerClose = Dialog.DialogClose;
+export const DrawerTitle = Dialog.DialogTitle;
+export const DrawerDescription = Dialog.DialogDescription;
 
-export default Modal;
+export default Drawer;
